@@ -14,7 +14,7 @@ When I want to bump it, I always visit the nixpkgs repository and copy and paste
 ```console
 > go install .
 > cd repository-that-using-nix
-> $HOME/go/bin/nix-headbump && git commit -m 'Bump nixpkgs to latest' *.nix
+> ${GOPATH:-"$HOME/go"}/bin/nix-headbump && git commit -m 'Bump nixpkgs to latest' *.nix
 [main 213d1bf] Bump nixpkgs to latest
  1 file changed, 1 insertion(+), 1 deletion(-)
 ```
