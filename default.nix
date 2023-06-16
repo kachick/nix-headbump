@@ -2,6 +2,7 @@
 
 pkgs.mkShell {
   buildInputs = [
+    pkgs.go_1_20
     pkgs.nil
     pkgs.nixpkgs-fmt
     pkgs.dprint
