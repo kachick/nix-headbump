@@ -1,0 +1,23 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  default:
+    deps:
+      - task: fmt
+      - task: lint
+      - task: build
+  build:
+    cmds:
+      - go build -ldflags "-X main.revision=$(git rev-parse --short HEAD)"
+  fmt:
+    cmds:
+      - dprint fmt
+      - go fmt
+  lint:
+    # go fmt does not have option for no effect - https://github.com/golang/go/issues/41189
+    cmds:
+      - dprint check
+      - go vet
+      - actionlint

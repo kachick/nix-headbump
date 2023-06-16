@@ -7,5 +7,6 @@ pkgs.mkShell {
     pkgs.nixpkgs-fmt
     pkgs.dprint
     pkgs.actionlint
+    pkgs.go-task
   ];
 }

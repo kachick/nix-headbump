@@ -10,11 +10,14 @@
 > nix-shell
 (prepared bash)
 
-> go version
-go version go1.20.4 linux/amd64
+> task
+task: [build] go build -ldflags "-X main.revision=$(git rev-parse --short HEAD)"
+task: [fmt] dprint fmt
+task: [lint] dprint check
+task: [lint] go vet
+task: [fmt] go fmt
+task: [lint] actionlint
 
-> dprint --version
-dprint 0.36.1
-
-> go build -ldflags "-X main.revision=$(git rev-parse --short HEAD)"
+> ./nix-headbump --version
+0.1.0(ceaa32d)
 ```
