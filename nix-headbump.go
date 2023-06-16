@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -52,7 +53,7 @@ type Response struct {
 }
 
 func bump(path string) error {
-	bytes, err := os.ReadFile(path)
+	origin, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
@@ -74,6 +75,10 @@ func bump(path string) error {
 	if json.Unmarshal(body, jsonRes) != nil {
 		return err
 	}
-	replaced := re.ReplaceAll(bytes, []byte("${1}"+jsonRes.Commit.Sha+"${2}"))
+	replaced := re.ReplaceAll(origin, []byte("${1}"+jsonRes.Commit.Sha+"${2}"))
+	if bytes.Equal(origin, replaced) {
+		return nil
+	}
+
 	return os.WriteFile(path, replaced, os.ModePerm)
 }
