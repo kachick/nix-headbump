@@ -13,12 +13,14 @@ import (
 
 const version string = "0.1.0"
 
+var revision string
+
 func main() {
 	versionFlag := flag.Bool("version", false, "print the version of this program")
 	flag.Parse()
 
 	if *versionFlag {
-		fmt.Printf("%s\n", version)
+		fmt.Printf("%s\n", version+"("+revision+")")
 		return
 	}
 
