@@ -57,7 +57,7 @@ func bump(path string) error {
 	if err != nil {
 		return err
 	}
-	re := regexp.MustCompile(`(import \(fetchTarball "https://github.com/NixOS/nixpkgs/archive/)(?:[^"]+?)(\.tar\.gz"\))`)
+	re := regexp.MustCompile(`(?s)(import\s+\(fetchTarball\s+"https://github.com/NixOS/nixpkgs/archive/)(?:[^"]+?)(\.tar\.gz"\))`)
 	req, _ := http.NewRequest("GET", "https://api.github.com/repos/NixOS/nixpkgs/branches/master", nil)
 	req.Header.Set("Accept", "application/vnd.github+json")
 	req.Header.Set("X-GitHub-Api-Version", "2022-11-28")
