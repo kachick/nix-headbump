@@ -12,7 +12,7 @@ When I want to bump it, I always visit the nixpkgs repository and copy and paste
 ## Usage
 
 ```console
-> go install .
+> go install -ldflags "-X main.revision=$(git rev-parse --short HEAD)"
 > cd repository-that-using-nix
 > ${GOPATH:-"$HOME/go"}/bin/nix-headbump && git commit -m 'Bump nixpkgs to latest' *.nix
 [main 213d1bf] Bump nixpkgs to latest

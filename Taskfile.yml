@@ -8,6 +8,9 @@ tasks:
       - task: fmt
       - task: lint
       - task: build
+  install:
+    cmds:
+      - go install -ldflags "-X main.revision=$(git rev-parse --short HEAD)"
   build:
     cmds:
       - go build -ldflags "-X main.revision=$(git rev-parse --short HEAD)"
