@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "golang.go",
+    "redhat.vscode-yaml",
+    "editorconfig.editorconfig",
+    "streetsidesoftware.code-spell-checker",
+    "dprint.dprint",
+    "jnoortheen.nix-ide"
+  ]
+}

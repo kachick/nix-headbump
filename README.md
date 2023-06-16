@@ -11,6 +11,6 @@ When I want to bump it, I always visit the nixpkgs repository and copy and paste
 
 ## NOTE
 
-* I guess there are many other syntax patterns in Nix files that I have not used. This code will not care about them.
-* I don't know [nix-community/go-nix](https://github.com/nix-community/go-nix) will fit or not.
-* I don't know if Nix provides this feature with the CLI or not.
+- I guess there are many other syntax patterns in Nix files that I have not used. This code will not care about them.
+- I don't know [nix-community/go-nix](https://github.com/nix-community/go-nix) will fit or not.
+- I don't know if Nix provides this feature with the CLI or not.
