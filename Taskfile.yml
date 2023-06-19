@@ -10,10 +10,10 @@ tasks:
       - task: build
   install:
     cmds:
-      - go install -ldflags "-X main.revision=$(git rev-parse --short HEAD)"
+      - go install -ldflags "-X main.commit=$(git rev-parse HEAD) -X main.date=$(date --iso-8601)"
   build:
     cmds:
-      - go build -ldflags "-X main.revision=$(git rev-parse --short HEAD)"
+      - goreleaser build --snapshot --single-target --clean
   test:
     cmds:
       - go test
@@ -34,3 +34,4 @@ tasks:
       - go version
       - dprint --version
       - actionlint --version
+        goreleaser --version
