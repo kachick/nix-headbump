@@ -95,7 +95,10 @@ func getLastVersion() (string, error) {
 		Commit commit `json:"commit"`
 	}
 
+	// https://docs.github.com/en/rest/branches/branches?apiVersion=2022-11-28#get-a-branch
 	req, _ := http.NewRequest("GET", "https://api.github.com/repos/NixOS/nixpkgs/branches/master", nil)
+	// May be necessary to set "Authorization" header if frequent requests are needed.
+	// -H "Authorization: Bearer <YOUR-TOKEN>"\
 	req.Header.Set("Accept", "application/vnd.github+json")
 	req.Header.Set("X-GitHub-Api-Version", "2022-11-28")
 	client := new(http.Client)
