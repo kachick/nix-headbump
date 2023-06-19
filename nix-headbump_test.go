@@ -26,3 +26,15 @@ func TestGetLastVersion(t *testing.T) {
 		t.Errorf("got %q, wanted %q", got, "a string that have 40 length")
 	}
 }
+
+func TestTargetPath(t *testing.T) {
+	got, err := getTargetPath()
+	if err != nil {
+		t.Fatalf("Failed to get target files: %s", err.Error())
+	}
+	want := "default.nix"
+
+	if got != want {
+		t.Errorf("got %q, wanted %q", got, want)
+	}
+}

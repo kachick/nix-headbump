@@ -24,6 +24,7 @@ func main() {
 	versionFlag := flag.Bool("version", false, "print the version of this program")
 	currentFlag := flag.Bool("current", false, "print current nixpath without bumping")
 	lastFlag := flag.Bool("last", false, "print git head ref without bumping")
+	printTargetFlag := flag.Bool("print-target", false, "detect and print which file will be bumped")
 	flag.Parse()
 
 	if *versionFlag {
@@ -32,16 +33,16 @@ func main() {
 		return
 	}
 
-	path := "default.nix"
-	isNixFileExist := true
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		path = "shell.nix"
-		if _, err := os.Stat(path); os.IsNotExist(err) {
-			isNixFileExist = false
-		}
+	path, err := getTargetPath()
+	if err != nil {
+		log.Fatalf("Failed to get target files: %s", err.Error())
 	}
 
-	if isNixFileExist {
+	if path != "" {
+		if *printTargetFlag {
+			fmt.Println(path)
+			return
+		}
 		if *currentFlag {
 			current, err := getCurrentVersion(path)
 			if err != nil {
@@ -78,6 +79,21 @@ func bump(path string, last string) error {
 	}
 
 	return os.WriteFile(path, replaced, os.ModePerm)
+}
+
+func getTargetPath() (string, error) {
+	paths := [2]string{"default.nix", "shell.nix"}
+	for _, path := range paths {
+		_, err := os.Stat(path)
+		if err == nil {
+			return path, nil
+		}
+
+		if !os.IsNotExist(err) {
+			return "", fmt.Errorf("Can not open %s: %w", path, err)
+		}
+	}
+	return "", fmt.Errorf("%v are not found", paths)
 }
 
 func getCurrentVersion(path string) (string, error) {
