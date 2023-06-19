@@ -5,8 +5,8 @@ version: '3'
 tasks:
   default:
     deps:
-      - task: fmt
       - task: lint
+      - task: test
       - task: build
   install:
     cmds:
@@ -14,6 +14,9 @@ tasks:
   build:
     cmds:
       - go build -ldflags "-X main.revision=$(git rev-parse --short HEAD)"
+  test:
+    cmds:
+      - go test
   fmt:
     cmds:
       - dprint fmt
@@ -24,3 +27,10 @@ tasks:
       - dprint check
       - go vet
       - actionlint
+  versions:
+    cmds:
+      - nix --version
+      - task --version
+      - go version
+      - dprint --version
+      - actionlint --version
