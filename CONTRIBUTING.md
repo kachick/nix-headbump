@@ -12,11 +12,13 @@
 
 > task
 task: [build] go build -ldflags "-X main.revision=$(git rev-parse --short HEAD)"
-task: [fmt] dprint fmt
 task: [lint] dprint check
 task: [lint] go vet
-task: [fmt] go fmt
 task: [lint] actionlint
+
+> task fmt
+task: [fmt] dprint fmt
+task: [fmt] go fmt
 
 > ./nix-headbump --version
 0.1.0(ceaa32d)
