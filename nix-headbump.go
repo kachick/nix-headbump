@@ -12,11 +12,13 @@ import (
 	"regexp"
 )
 
-const version string = "0.1.0"
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
 
-var re = regexp.MustCompile(`(?s)(import\s+\(fetchTarball\s+"https://github.com/NixOS/nixpkgs/archive/)([^"]+?)(\.tar\.gz"\))`)
-
-var revision string
+	re = regexp.MustCompile(`(?s)(import\s+\(fetchTarball\s+"https://github.com/NixOS/nixpkgs/archive/)([^"]+?)(\.tar\.gz"\))`)
+)
 
 func main() {
 	versionFlag := flag.Bool("version", false, "print the version of this program")
@@ -25,7 +27,8 @@ func main() {
 	flag.Parse()
 
 	if *versionFlag {
-		fmt.Printf("%s\n", version+"("+revision+")")
+		revision := commit[:7]
+		fmt.Printf("%s\n", "nix-headbump"+" "+version+" "+"("+revision+") # "+date)
 		return
 	}
 
