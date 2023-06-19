@@ -8,5 +8,6 @@ pkgs.mkShell {
     pkgs.dprint
     pkgs.actionlint
     pkgs.go-task
+    pkgs.goreleaser
   ];
 }
