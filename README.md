@@ -9,12 +9,20 @@ I have `default.nix` and `shell.nix` in many repositories. They have different n
 Personally, I use the latest [nixpkgs](https://github.com/NixOS/nixpkgs) ref.
 When I want to bump it, I always visit the nixpkgs repository and copy and paste. It is a tedious task.
 
+## Installation
+
+`go install` is also okay, or use [prebuilt binaries](https://github.com/kachick/nix-headbump/releases)
+
+```console
+> curl -L https://github.com/kachick/nix-headbump/releases/latest/download/nix-headbump_Linux_x86_64.tar.gz | tar xvz -C ./ nix-headbump
+> ./nix-headbump --version
+nix-headbump 0.1.0 (d8e9da7) # 2023-06-19T08:55:33Z
+```
+
 ## Usage
 
 ```console
-> go install -ldflags "-X main.commit=$(git rev-parse --short HEAD) -X main.date=$(date --iso-8601)"
-> cd repository-that-using-nix
-> ${GOPATH:-"$HOME/go"}/bin/nix-headbump && git commit -m 'Bump nixpkgs to latest' *.nix
+> nix-headbump && git commit -m 'Bump nixpkgs to latest' *.nix
 [main 213d1bf] Bump nixpkgs to latest
  1 file changed, 1 insertion(+), 1 deletion(-)
 ```
