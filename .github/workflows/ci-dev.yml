@@ -16,6 +16,8 @@ on:
     - cron: '0 17 * * *'
   workflow_dispatch:
 
+# To check the cache logic actually works
+
 jobs:
   get-version:
     runs-on: ubuntu-latest
