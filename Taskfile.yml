@@ -24,3 +24,10 @@ tasks:
       - dprint check
       - go vet
       - actionlint
+  versions:
+    cmds:
+      - nix --version
+      - task --version
+      - go version
+      - dprint --version
+      - actionlint --version
