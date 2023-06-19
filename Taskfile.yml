@@ -21,6 +21,7 @@ tasks:
     cmds:
       - dprint fmt
       - go fmt
+      - nixpkgs-fmt ./*.nix
   lint:
     # go fmt does not have option for no effect - https://github.com/golang/go/issues/41189
     cmds:
@@ -28,6 +29,7 @@ tasks:
       - go vet
       - actionlint
       - goreleaser check
+      - nixpkgs-fmt --check ./*.nix
   versions:
     cmds:
       - nix --version
