@@ -11,7 +11,7 @@
 (prepared bash)
 
 > task
-task: [build] go build ..."
+task: [build] ..."
 task: [test] go test
 task: [lint] dprint check
 task: [lint] go vet
