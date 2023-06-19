@@ -27,6 +27,7 @@ tasks:
       - dprint check
       - go vet
       - actionlint
+      - goreleaser check
   versions:
     cmds:
       - nix --version
