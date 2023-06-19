@@ -7,7 +7,7 @@ func TestGetCurrentVersion(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Getting the version has been failed: %s", err.Error())
 	}
-	want := "e57b65abbbf7a2d5786acc86fdf56cde060ed026"
+	want := "d50f95c6e2a8f58a9e883d918d1e184a6b512900"
 
 	if got != want {
 		t.Errorf("got %q, wanted %q", got, want)
