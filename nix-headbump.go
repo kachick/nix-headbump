@@ -14,11 +14,14 @@ import (
 
 const version string = "0.1.0"
 
+var re = regexp.MustCompile(`(?s)(import\s+\(fetchTarball\s+"https://github.com/NixOS/nixpkgs/archive/)([^"]+?)(\.tar\.gz"\))`)
+
 var revision string
 
 func main() {
 	versionFlag := flag.Bool("version", false, "print the version of this program")
 	currentFlag := flag.Bool("current", false, "print current nixpath without bumping")
+	lastFlag := flag.Bool("last", false, "print git head ref without bumping")
 	flag.Parse()
 
 	if *versionFlag {
@@ -44,7 +47,15 @@ func main() {
 			fmt.Println(current)
 			return
 		}
-		err := bump(path)
+		last, err := getLastVersion()
+		if err != nil {
+			log.Fatalf("Getting the last version has been failed: %s", err.Error())
+		}
+		if *lastFlag {
+			fmt.Println(last)
+			return
+		}
+		err = bump(path, last)
 		if err != nil {
 			log.Fatalf("Bumping the version has been failed: %s", err.Error())
 		}
@@ -53,39 +64,12 @@ func main() {
 	}
 }
 
-type Commit struct {
-	Sha string `json:"sha"`
-}
-
-type Response struct {
-	Commit Commit `json:"commit"`
-}
-
-var re = regexp.MustCompile(`(?s)(import\s+\(fetchTarball\s+"https://github.com/NixOS/nixpkgs/archive/)([^"]+?)(\.tar\.gz"\))`)
-
-func bump(path string) error {
+func bump(path string, last string) error {
 	origin, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
-	req, _ := http.NewRequest("GET", "https://api.github.com/repos/NixOS/nixpkgs/branches/master", nil)
-	req.Header.Set("Accept", "application/vnd.github+json")
-	req.Header.Set("X-GitHub-Api-Version", "2022-11-28")
-	client := new(http.Client)
-	res, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
-	jsonRes := &Response{}
-	if json.Unmarshal(body, jsonRes) != nil {
-		return err
-	}
-	replaced := re.ReplaceAll(origin, []byte("${1}"+jsonRes.Commit.Sha+"${3}"))
+	replaced := re.ReplaceAll(origin, []byte("${1}"+last+"${3}"))
 	if bytes.Equal(origin, replaced) {
 		return nil
 	}
@@ -100,4 +84,33 @@ func getCurrentVersion(path string) (string, error) {
 	}
 	matches := re.FindStringSubmatch(string(origin))
 	return matches[2], nil
+}
+
+func getLastVersion() (string, error) {
+	type commit struct {
+		Sha string `json:"sha"`
+	}
+
+	type response struct {
+		Commit commit `json:"commit"`
+	}
+
+	req, _ := http.NewRequest("GET", "https://api.github.com/repos/NixOS/nixpkgs/branches/master", nil)
+	req.Header.Set("Accept", "application/vnd.github+json")
+	req.Header.Set("X-GitHub-Api-Version", "2022-11-28")
+	client := new(http.Client)
+	res, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer res.Body.Close()
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return "", err
+	}
+	jsonRes := &response{}
+	if json.Unmarshal(body, jsonRes) != nil {
+		return "", err
+	}
+	return jsonRes.Commit.Sha, nil
 }
