@@ -34,4 +34,4 @@ tasks:
       - go version
       - dprint --version
       - actionlint --version
-        goreleaser --version
+      - goreleaser --version
