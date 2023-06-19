@@ -58,7 +58,7 @@ jobs:
       - name: Log current versions
         run: task versions
       - name: 'Export Nix store cache'
-        if: ${{ steps.nix-cache.outputs.cache-hit  == 'true' }}
+        if: ${{ steps.nix-cache.outputs.cache-hit  != 'true' }}
         run: nix-store --export "$(find /nix/store -maxdepth 1 -name '*-*')" > /tmp/nixcache
       - name: Run main task
         run: task
