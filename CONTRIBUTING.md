@@ -10,6 +10,10 @@
 > nix-shell
 (prepared bash)
 
+> task fmt
+task: [fmt] dprint fmt
+task: [fmt] go fmt
+
 > task
 task: [build] ..."
 task: [test] go test
@@ -19,10 +23,14 @@ task: [lint] actionlint
 PASS
 ok      nix-headbump    0.313s
 
-> task fmt
-task: [fmt] dprint fmt
-task: [fmt] go fmt
+> find dist
+dist
+dist/metadata.json
+dist/config.yaml
+dist/nix-headbump_linux_amd64_v1
+dist/nix-headbump_linux_amd64_v1/nix-headbump
+dist/artifacts.json
 
-> ./nix-headbump --version
-0.1.0(ceaa32d)
+> ./dist/nix-headbump_linux_amd64_v1/nix-headbump --version
+nix-headbump 0.1.1-next (906924b) # 2023-06-19T09:33:14Z
 ```
