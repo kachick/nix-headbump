@@ -12,9 +12,12 @@
 
 > task
 task: [build] go build -ldflags "-X main.revision=$(git rev-parse --short HEAD)"
+task: [test] go test
 task: [lint] dprint check
 task: [lint] go vet
 task: [lint] actionlint
+PASS
+ok      nix-headbump    0.313s
 
 > task fmt
 task: [fmt] dprint fmt

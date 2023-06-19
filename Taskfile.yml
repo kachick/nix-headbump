@@ -6,6 +6,7 @@ tasks:
   default:
     deps:
       - task: lint
+      - task: test
       - task: build
   install:
     cmds:
@@ -13,6 +14,9 @@ tasks:
   build:
     cmds:
       - go build -ldflags "-X main.revision=$(git rev-parse --short HEAD)"
+  test:
+    cmds:
+      - go test
   fmt:
     cmds:
       - dprint fmt
