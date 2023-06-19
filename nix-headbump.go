@@ -42,7 +42,7 @@ func main() {
 		if *currentFlag {
 			current, err := getCurrentVersion(path)
 			if err != nil {
-				log.Fatalf("Extracting the version has been failed: %s", err.Error())
+				log.Fatalf("Getting the current version has been failed: %s", err.Error())
 			}
 			fmt.Println(current)
 			return
