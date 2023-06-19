@@ -33,7 +33,7 @@ jobs:
       - id: current
         run: |
           current="$(nix-headbump -current)"
-          echo "current=${current}" >> "$GITHUB_OUTPUT"
+          echo "current=${current}" | tee -a "$GITHUB_OUTPUT"
   tasks:
     runs-on: ubuntu-latest
     timeout-minutes: 30
