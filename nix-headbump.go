@@ -18,6 +18,7 @@ var revision string
 
 func main() {
 	versionFlag := flag.Bool("version", false, "print the version of this program")
+	currentFlag := flag.Bool("current", false, "print current nixpath without bumping")
 	flag.Parse()
 
 	if *versionFlag {
@@ -35,6 +36,14 @@ func main() {
 	}
 
 	if isNixFileExist {
+		if *currentFlag {
+			current, err := getCurrentVersion(path)
+			if err != nil {
+				log.Fatalf("Extracting the version has been failed: %s", err.Error())
+			}
+			fmt.Println(current)
+			return
+		}
 		err := bump(path)
 		if err != nil {
 			log.Fatalf("Bumping the version has been failed: %s", err.Error())
@@ -52,12 +61,13 @@ type Response struct {
 	Commit Commit `json:"commit"`
 }
 
+var re = regexp.MustCompile(`(?s)(import\s+\(fetchTarball\s+"https://github.com/NixOS/nixpkgs/archive/)([^"]+?)(\.tar\.gz"\))`)
+
 func bump(path string) error {
 	origin, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
-	re := regexp.MustCompile(`(?s)(import\s+\(fetchTarball\s+"https://github.com/NixOS/nixpkgs/archive/)(?:[^"]+?)(\.tar\.gz"\))`)
 	req, _ := http.NewRequest("GET", "https://api.github.com/repos/NixOS/nixpkgs/branches/master", nil)
 	req.Header.Set("Accept", "application/vnd.github+json")
 	req.Header.Set("X-GitHub-Api-Version", "2022-11-28")
@@ -75,10 +85,19 @@ func bump(path string) error {
 	if json.Unmarshal(body, jsonRes) != nil {
 		return err
 	}
-	replaced := re.ReplaceAll(origin, []byte("${1}"+jsonRes.Commit.Sha+"${2}"))
+	replaced := re.ReplaceAll(origin, []byte("${1}"+jsonRes.Commit.Sha+"${3}"))
 	if bytes.Equal(origin, replaced) {
 		return nil
 	}
 
 	return os.WriteFile(path, replaced, os.ModePerm)
+}
+
+func getCurrentVersion(path string) (string, error) {
+	origin, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	matches := re.FindStringSubmatch(string(origin))
+	return matches[2], nil
 }
