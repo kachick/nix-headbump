@@ -59,6 +59,8 @@ jobs:
         run: nix-shell --run 'task versions'
       - name: 'Export Nix store cache'
         if: ${{ steps.nix-cache.outputs.cache-hit  != 'true' }}
-        run: nix-store --export "$(find /nix/store -maxdepth 1 -name '*-*')" > /tmp/nixcache
+        run: |
+          readarray -t paths < <(find /nix/store -maxdepth 1 -name '*-*')
+          nix-store --export "${paths[@]}" > /tmp/nixcache
       - name: Run main task
         run: nix-shell --run 'task'
