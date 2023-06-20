@@ -38,33 +38,32 @@ func main() {
 		log.Fatalf("Failed to get target files: %s", err.Error())
 	}
 
-	if path != "" {
-		if *printTargetFlag {
-			fmt.Println(path)
-			return
-		}
-		if *currentFlag {
-			current, err := getCurrentVersion(path)
-			if err != nil {
-				log.Fatalf("Getting the current version has been failed: %s", err.Error())
-			}
-			fmt.Println(current)
-			return
-		}
-		last, err := getLastVersion()
-		if err != nil {
-			log.Fatalf("Getting the last version has been failed: %s", err.Error())
-		}
-		if *lastFlag {
-			fmt.Println(last)
-			return
-		}
-		err = bump(path, last)
-		if err != nil {
-			log.Fatalf("Bumping the version has been failed: %s", err.Error())
-		}
-	} else {
+	if path == "" {
 		log.Fatalln("Both default.nix and shell.nix are not found")
+	}
+
+	if *printTargetFlag {
+		fmt.Println(path)
+		return
+	}
+	if *currentFlag {
+		current, err := getCurrentVersion(path)
+		if err != nil {
+			log.Fatalf("Getting the current version has been failed: %s", err.Error())
+		}
+		fmt.Println(current)
+		return
+	}
+	last, err := getLastVersion()
+	if err != nil {
+		log.Fatalf("Getting the last version has been failed: %s", err.Error())
+	}
+	if *lastFlag {
+		fmt.Println(last)
+		return
+	}
+	if err = bump(path, last); err != nil {
+		log.Fatalf("Bumping the version has been failed: %s", err.Error())
 	}
 }
 
