@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -21,49 +22,77 @@ var (
 )
 
 func main() {
-	versionFlag := flag.Bool("version", false, "print the version of this program")
-	currentFlag := flag.Bool("current", false, "print current nixpath without bumping")
-	lastFlag := flag.Bool("last", false, "print git head ref without bumping")
-	printTargetFlag := flag.Bool("print-target", false, "detect and print which file will be bumped")
-	flag.Parse()
+	usageError := errors.New("expected 'bump' or 'detect' subcommands")
 
+	detectCmd := flag.NewFlagSet("detect", flag.ExitOnError)
+	bumpCmd := flag.NewFlagSet("bump", flag.ExitOnError)
+	versionFlag := flag.Bool("version", false, "print the version of this program")
+	currentFlag := detectCmd.Bool("current", false, "print current nixpath without bumping")
+	lastFlag := detectCmd.Bool("last", false, "print git head ref without bumping")
+	target := detectCmd.Bool("target", false, "print which file will be bumped")
+	flag.Parse()
 	if *versionFlag {
 		revision := commit[:7]
 		fmt.Printf("%s\n", "nix-headbump"+" "+version+" "+"("+revision+") # "+date)
 		return
 	}
 
+	if len(os.Args) < 2 {
+		fmt.Println(usageError.Error())
+		os.Exit(1)
+	}
+
 	path, err := getTargetPath()
 	if err != nil {
 		log.Fatalf("Failed to get target files: %s", err.Error())
 	}
-
 	if path == "" {
 		log.Fatalln("Both default.nix and shell.nix are not found")
 	}
 
-	if *printTargetFlag {
-		fmt.Println(path)
-		return
-	}
-	if *currentFlag {
-		current, err := getCurrentVersion(path)
+	switch os.Args[1] {
+	case "detect":
+		err := detectCmd.Parse(os.Args[2:])
 		if err != nil {
-			log.Fatalf("Getting the current version has been failed: %s", err.Error())
+			fmt.Println(usageError.Error())
 		}
-		fmt.Println(current)
-		return
-	}
-	last, err := getLastVersion()
-	if err != nil {
-		log.Fatalf("Getting the last version has been failed: %s", err.Error())
-	}
-	if *lastFlag {
-		fmt.Println(last)
-		return
-	}
-	if err = bump(path, last); err != nil {
-		log.Fatalf("Bumping the version has been failed: %s", err.Error())
+		if *target {
+			fmt.Println(path)
+			return
+		}
+		if *currentFlag {
+			current, err := getCurrentVersion(path)
+			if err != nil {
+				log.Fatalf("Getting the current version has been failed: %s", err.Error())
+			}
+			fmt.Println(current)
+			return
+		}
+		last, err := getLastVersion()
+		if err != nil {
+			log.Fatalf("Getting the last version has been failed: %s", err.Error())
+		}
+		if *lastFlag {
+			fmt.Println(last)
+			return
+		}
+
+		detectCmd.PrintDefaults()
+	case "bump":
+		err := bumpCmd.Parse(os.Args[2:])
+		if err != nil {
+			fmt.Println(usageError.Error())
+		}
+		last, err := getLastVersion()
+		if err != nil {
+			log.Fatalf("Getting the last version has been failed: %s", err.Error())
+		}
+		if err = bump(path, last); err != nil {
+			log.Fatalf("Bumping the version has been failed: %s", err.Error())
+		}
+	default:
+		fmt.Println(usageError.Error())
+		os.Exit(1)
 	}
 }
 

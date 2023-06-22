@@ -16,13 +16,18 @@ When I want to bump it, I always visit the nixpkgs repository and copy and paste
 ```console
 > curl -L https://github.com/kachick/nix-headbump/releases/latest/download/nix-headbump_Linux_x86_64.tar.gz | tar xvz -C ./ nix-headbump
 > ./nix-headbump --version
-nix-headbump 0.1.0 (d8e9da7) # 2023-06-19T08:55:33Z
+nix-headbump 0.2.0 (70f68fa) # 2023-06-22T09:58:05Z
 ```
 
 ## Usage
 
+Providing two subcommands. I'm using `detect` in CI and `bump` in local.
+
 ```console
-> nix-headbump && git commit -m 'Bump nixpkgs to latest' *.nix
+> nix-headbump detect --current
+e57b65abbbf7a2d5786acc86fdf56cde060ed026
+
+> nix-headbump bump && git commit -m 'Bump nixpkgs to latest' *.nix
 [main 213d1bf] Bump nixpkgs to latest
  1 file changed, 1 insertion(+), 1 deletion(-)
 ```
