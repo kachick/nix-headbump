@@ -1,9 +1,9 @@
-package main
+package core
 
 import "testing"
 
 func TestGetCurrentVersion(t *testing.T) {
-	got, err := getCurrentVersion("default.nix")
+	got, err := GetCurrentVersion("default.nix")
 	if err != nil {
 		t.Fatalf("Getting the version has been failed: %s", err.Error())
 	}
@@ -16,7 +16,7 @@ func TestGetCurrentVersion(t *testing.T) {
 
 // Calling actual GitHub API, May be necessary to stub or disabling in CI
 func TestGetLastVersion(t *testing.T) {
-	got, err := getLastVersion()
+	got, err := GetLastVersion()
 	if err != nil {
 		t.Fatalf("Getting the last version has been failed: %s", err.Error())
 	}
@@ -28,7 +28,7 @@ func TestGetLastVersion(t *testing.T) {
 }
 
 func TestTargetPath(t *testing.T) {
-	got, err := getTargetPath()
+	got, err := GetTargetPath()
 	if err != nil {
 		t.Fatalf("Failed to get target files: %s", err.Error())
 	}
