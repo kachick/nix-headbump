@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -17,7 +16,11 @@ var (
 )
 
 func main() {
-	usageError := errors.New("expected 'bump' or 'detect' subcommands")
+	const usage = `Usage: nix-headbump <subcommand> <flags>
+
+$ nix-headbump detect -current
+$ nix-headbump bump
+$ nix-headbump -version`
 
 	detectCmd := flag.NewFlagSet("detect", flag.ExitOnError)
 	bumpCmd := flag.NewFlagSet("bump", flag.ExitOnError)
@@ -25,6 +28,18 @@ func main() {
 	currentFlag := detectCmd.Bool("current", false, "print current nixpath without bumping")
 	lastFlag := detectCmd.Bool("last", false, "print git head ref without bumping")
 	target := detectCmd.Bool("target", false, "print which file will be bumped")
+
+	flag.Usage = func() {
+		// https://github.com/golang/go/issues/57059#issuecomment-1336036866
+		fmt.Printf("%s", usage+"\n\n")
+		fmt.Println("Usage of command:")
+		flag.PrintDefaults()
+		fmt.Println("")
+		detectCmd.Usage()
+		fmt.Println("")
+		bumpCmd.Usage()
+	}
+
 	flag.Parse()
 	if *versionFlag {
 		revision := commit[:7]
@@ -33,7 +48,7 @@ func main() {
 	}
 
 	if len(os.Args) < 2 {
-		fmt.Println(usageError.Error())
+		flag.Usage()
 		os.Exit(1)
 	}
 
@@ -49,7 +64,7 @@ func main() {
 	case "detect":
 		err := detectCmd.Parse(os.Args[2:])
 		if err != nil {
-			fmt.Println(usageError.Error())
+			flag.Usage()
 		}
 		if *target {
 			fmt.Println(path)
@@ -72,11 +87,11 @@ func main() {
 			return
 		}
 
-		detectCmd.PrintDefaults()
+		detectCmd.Usage()
 	case "bump":
 		err := bumpCmd.Parse(os.Args[2:])
 		if err != nil {
-			fmt.Println(usageError.Error())
+			flag.Usage()
 		}
 		last, err := nhb.GetLastVersion()
 		if err != nil {
@@ -85,8 +100,11 @@ func main() {
 		if err = nhb.Bump(path, last); err != nil {
 			log.Fatalf("Bumping the version has been failed: %s", err.Error())
 		}
+
+		bumpCmd.Usage()
 	default:
-		fmt.Println(usageError.Error())
+		flag.Usage()
+
 		os.Exit(1)
 	}
 }
