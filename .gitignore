@@ -20,7 +20,8 @@
 # Go workspace file
 go.work
 
-# Binary
-nix-headbump
+# Binary when not used goreleaser
+/nix-headbump
 
+# goreleaser generates to
 dist/
