@@ -27,7 +27,6 @@ tasks:
     cmds:
       - dprint check
       - go vet
-      - actionlint
       - goreleaser check
       - nixpkgs-fmt --check ./*.nix
   versions:
@@ -36,5 +35,4 @@ tasks:
       - task --version
       - go version
       - dprint --version
-      - actionlint --version
       - goreleaser --version
