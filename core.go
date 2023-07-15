@@ -36,7 +36,7 @@ func GetTargetPath() (string, error) {
 		}
 
 		if !os.IsNotExist(err) {
-			return "", fmt.Errorf("Can not open %s: %w", path, err)
+			return "", fmt.Errorf("can not open %s: %w", path, err)
 		}
 	}
 	return "", fmt.Errorf("%v are not found", paths)
