@@ -7,18 +7,30 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"regexp"
 )
 
 var (
-	re = regexp.MustCompile(`(?s)(import\s+\(fetchTarball\s+"https://github.com/NixOS/nixpkgs/archive/)([^"]+?)(\.tar\.gz"\))`)
+	importRe = regexp.MustCompile(`(?s)(import\s+\(fetchTarball\s+"https://github.com/NixOS/nixpkgs/archive/)([^"]+?)(\.tar\.gz"\))`)
+	flakeRe  = regexp.MustCompile(`(nixpkgs\.url\s+=\s+"github:NixOS/nixpkgs/)([^"]+)(")`)
 )
+
+// Returned regex should have 3 size captured groups
+func GetRegexp(path string) *regexp.Regexp {
+	if filepath.Base(path) == "flake.nix" {
+		return flakeRe
+	}
+
+	return importRe
+}
 
 func Bump(path string, last string) error {
 	origin, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
+	re := GetRegexp(path)
 	replaced := re.ReplaceAll(origin, []byte("${1}"+last+"${3}"))
 	if bytes.Equal(origin, replaced) {
 		return nil
@@ -28,7 +40,7 @@ func Bump(path string, last string) error {
 }
 
 func GetTargetPath() (string, error) {
-	paths := [2]string{"default.nix", "shell.nix"}
+	paths := [3]string{"flake.nix", "default.nix", "shell.nix"}
 	for _, path := range paths {
 		_, err := os.Stat(path)
 		if err == nil {
@@ -36,7 +48,7 @@ func GetTargetPath() (string, error) {
 		}
 
 		if !os.IsNotExist(err) {
-			return "", fmt.Errorf("Can not open %s: %w", path, err)
+			return "", fmt.Errorf("can not open %s: %w", path, err)
 		}
 	}
 	return "", fmt.Errorf("%v are not found", paths)
@@ -47,7 +59,12 @@ func GetCurrentVersion(path string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	re := GetRegexp(path)
 	matches := re.FindStringSubmatch(string(origin))
+	if err != nil || len(matches) < 2 {
+		return "", err
+	}
+
 	return matches[2], nil
 }
 

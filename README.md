@@ -2,11 +2,11 @@
 
 For my personal use.
 
-I'm a new to the Nix ecosystem.
+I'm a new to the Nix ecosystem.\
 (If you know a better way, please let me know!)
 
-I have `default.nix` and `shell.nix` in many repositories. They have different nixpath(?) in the ref from the created timing.
-Personally, I use the latest [nixpkgs](https://github.com/NixOS/nixpkgs) ref.
+I have `flake.nix` and `default.nix` in many repositories. They have different nixpath(?) in the ref from the created timing.\
+Personally, I use the latest [nixpkgs](https://github.com/NixOS/nixpkgs) ref. But I avoid to specify `unstable`.\
 When I want to bump it, I always visit the nixpkgs repository and copy and paste. It is a tedious task.
 
 ## Installation

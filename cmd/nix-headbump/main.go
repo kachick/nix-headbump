@@ -57,7 +57,7 @@ $ nix-headbump -version`
 		log.Fatalf("Failed to get target files: %s", err.Error())
 	}
 	if path == "" {
-		log.Fatalln("Both default.nix and shell.nix are not found")
+		log.Fatalln("Any *.nix files are not found")
 	}
 
 	switch os.Args[1] {
