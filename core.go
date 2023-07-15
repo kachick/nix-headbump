@@ -28,7 +28,7 @@ func Bump(path string, last string) error {
 }
 
 func GetTargetPath() (string, error) {
-	paths := [2]string{"default.nix", "shell.nix"}
+	paths := [3]string{"flake.nix", "default.nix", "shell.nix"}
 	for _, path := range paths {
 		_, err := os.Stat(path)
 		if err == nil {
@@ -48,6 +48,10 @@ func GetCurrentVersion(path string) (string, error) {
 		return "", err
 	}
 	matches := re.FindStringSubmatch(string(origin))
+	if err != nil || len(matches) < 2 {
+		return "", err
+	}
+
 	return matches[2], nil
 }
 
