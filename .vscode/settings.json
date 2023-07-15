@@ -6,12 +6,5 @@
   },
   "[go]": {
     "editor.defaultFormatter": "golang.go"
-  },
-  "cSpell.words": [
-    "cachix",
-    "cmds",
-    "dprint",
-    "nixos",
-    "nixpkgs"
-  ]
+  }
 }

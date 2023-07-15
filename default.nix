@@ -9,5 +9,6 @@ pkgs.mkShell {
     pkgs.actionlint
     pkgs.go-task
     pkgs.goreleaser
+    pkgs.typos
   ];
 }

@@ -19,6 +19,7 @@ tasks:
       - go test
   fmt:
     cmds:
+      - typos . .github .vscode --write-changes
       - dprint fmt
       - go fmt
       - nixpkgs-fmt ./*.nix
@@ -28,6 +29,7 @@ tasks:
       - dprint check
       - go vet
       - goreleaser check
+      - typos . .github .vscode
       - nixpkgs-fmt --check ./*.nix
   versions:
     cmds:
@@ -36,3 +38,4 @@ tasks:
       - go version
       - dprint --version
       - goreleaser --version
+      - typos --version
