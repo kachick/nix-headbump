@@ -3,12 +3,12 @@
 ## Setup
 
 1. Install [Nix](https://nixos.org/) package manager
-2. Run `nix-shell` or `nix-shell --command 'zsh'`
+2. Run `nix develop` or `direnv allow` in project root
 3. You can use development tools
 
 ```console
-> nix-shell
-(prepared bash)
+> nix develop
+(prepared shell)
 
 > task fmt
 task: [fmt] dprint fmt

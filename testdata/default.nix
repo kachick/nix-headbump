@@ -3,12 +3,7 @@
 pkgs.mkShell {
   buildInputs = [
     pkgs.go_1_20
-    pkgs.nil
-    pkgs.nixpkgs-fmt
-    pkgs.dprint
-    pkgs.actionlint
     pkgs.go-task
     pkgs.goreleaser
-    pkgs.typos
   ];
 }
