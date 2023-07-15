@@ -132,7 +132,7 @@ func TestTargetPathMultipleCandidates(t *testing.T) {
 			t.Fatalf("failed to rollback working directory: %v", err)
 		}
 	})
-	err = os.Chdir("testdata/classic/candidates")
+	err = os.Chdir("testdata/candidates")
 	if err != nil {
 		t.Fatalf("failed to walk through testdata directory: %v", err)
 	}

@@ -7,18 +7,30 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"regexp"
 )
 
 var (
-	re = regexp.MustCompile(`(?s)(import\s+\(fetchTarball\s+"https://github.com/NixOS/nixpkgs/archive/)([^"]+?)(\.tar\.gz"\))`)
+	importRe = regexp.MustCompile(`(?s)(import\s+\(fetchTarball\s+"https://github.com/NixOS/nixpkgs/archive/)([^"]+?)(\.tar\.gz"\))`)
+	flakeRe  = regexp.MustCompile(`(nixpkgs\.url\s+=\s+"github:NixOS/nixpkgs/)([^"]+)(")`)
 )
+
+// Returned regex should have 3 size captured groups
+func GetRegexp(path string) *regexp.Regexp {
+	if filepath.Base(path) == "flake.nix" {
+		return flakeRe
+	}
+
+	return importRe
+}
 
 func Bump(path string, last string) error {
 	origin, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
+	re := GetRegexp(path)
 	replaced := re.ReplaceAll(origin, []byte("${1}"+last+"${3}"))
 	if bytes.Equal(origin, replaced) {
 		return nil
@@ -47,6 +59,7 @@ func GetCurrentVersion(path string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	re := GetRegexp(path)
 	matches := re.FindStringSubmatch(string(origin))
 	if err != nil || len(matches) < 2 {
 		return "", err
