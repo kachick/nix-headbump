@@ -1,8 +1,26 @@
 package core
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 func TestGetCurrentVersion(t *testing.T) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("failed to get current working directory: %v", err)
+	}
+	t.Cleanup(func() {
+		err := os.Chdir(cwd)
+		if err != nil {
+			t.Fatalf("failed to rollback working directory: %v", err)
+		}
+	})
+	err = os.Chdir("testdata")
+	if err != nil {
+		t.Fatalf("failed to walk through testdata directory: %v", err)
+	}
+
 	got, err := GetCurrentVersion("default.nix")
 	if err != nil {
 		t.Fatalf("Getting the version has been failed: %s", err.Error())
@@ -28,6 +46,21 @@ func TestGetLastVersion(t *testing.T) {
 }
 
 func TestTargetPath(t *testing.T) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("failed to get current working directory: %v", err)
+	}
+	t.Cleanup(func() {
+		err := os.Chdir(cwd)
+		if err != nil {
+			t.Fatalf("failed to rollback working directory: %v", err)
+		}
+	})
+	err = os.Chdir("testdata")
+	if err != nil {
+		t.Fatalf("failed to walk through testdata directory: %v", err)
+	}
+
 	got, err := GetTargetPath()
 	if err != nil {
 		t.Fatalf("Failed to get target files: %s", err.Error())
