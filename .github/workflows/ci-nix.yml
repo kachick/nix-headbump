@@ -5,11 +5,13 @@ on:
     paths:
       - '.github/workflows/ci-nix.yml'
       - '*.nix'
+      - 'flake.*'
       - 'Taskfile.yml'
   pull_request:
     paths:
       - '.github/workflows/ci-nix.yml'
       - '*.nix'
+      - 'flake.*'
       - 'Taskfile.yml'
   schedule:
     # Every 10:42 JST
@@ -25,8 +27,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: DeterminateSystems/nix-installer-action@v4
       - uses: DeterminateSystems/magic-nix-cache-action@v2
-      - run: nix-build
-      - name: Log current versions
-        run: nix-shell --run 'task versions'
-      - name: Run main task
-        run: nix-shell --run 'task'
+      - name: Print nixpkgs version
+        run: nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
+      - run: nix flake check
+      - run: nix develop --command echo 'This step should be done before any other "nix develop" steps because of measuring Nix build time'
+      - run: nix develop --command task versions
+      - run: nix develop --command task
