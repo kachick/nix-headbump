@@ -20,8 +20,8 @@ task: [test] go test
 task: [lint] dprint check
 task: [lint] go vet
 PASS
-ok      nix-headbump    0.313s
+ok      nixpkgs-url    0.313s
 
-> ./dist/nix-headbump --version
-nix-headbump dev (rev) # unknown
+> ./dist/nixpkgs-url --version
+nixpkgs-url dev (rev) # unknown
 ```

@@ -25,9 +25,9 @@
             ];
           };
 
-        packages.nix-headbump = pkgs.stdenv.mkDerivation
+        packages.nixpkgs-url = pkgs.stdenv.mkDerivation
           {
-            name = "nix-headbump";
+            name = "nixpkgs-url";
             src = self;
             buildInputs = with pkgs; [
               go_1_20
@@ -40,16 +40,16 @@
             '';
             installPhase = ''
               mkdir -p $out/bin
-              install -t $out/bin dist/nix-headbump
+              install -t $out/bin dist/nixpkgs-url
             '';
           };
 
-        packages.default = packages.nix-headbump;
+        packages.default = packages.nixpkgs-url;
 
         # `nix run`
         apps.default = {
           type = "app";
-          program = "${packages.nix-headbump}/bin/nix-headbump";
+          program = "${packages.nixpkgs-url}/bin/nixpkgs-url";
         };
       }
     );

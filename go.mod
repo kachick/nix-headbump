@@ -1,3 +1,3 @@
-module github.com/kachick/nix-headbump
+module github.com/kachick/nixpkgs-url
 
 go 1.20

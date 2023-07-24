@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	nhb "github.com/kachick/nix-headbump"
+	nixurl "github.com/kachick/nixpkgs-url"
 )
 
 var (
@@ -19,11 +19,11 @@ var (
 )
 
 func main() {
-	const usage = `Usage: nix-headbump <subcommand> <flags>
+	const usage = `Usage: nixpkgs-url <subcommand> <flags>
 
-$ nix-headbump detect -current
-$ nix-headbump bump
-$ nix-headbump -version`
+$ nixpkgs-url detect -current
+$ nixpkgs-url bump
+$ nixpkgs-url -version`
 
 	detectCmd := flag.NewFlagSet("detect", flag.ExitOnError)
 	bumpCmd := flag.NewFlagSet("bump", flag.ExitOnError)
@@ -46,7 +46,7 @@ $ nix-headbump -version`
 	if len(commit) >= 7 {
 		revision = commit[:7]
 	}
-	version := fmt.Sprintf("%s\n", "nix-headbump"+" "+version+" "+"("+revision+") # "+date)
+	version := fmt.Sprintf("%s\n", "nixpkgs-url"+" "+version+" "+"("+revision+") # "+date)
 
 	flag.Parse()
 	if *versionFlag {
@@ -59,7 +59,7 @@ $ nix-headbump -version`
 		os.Exit(1)
 	}
 
-	path, err := nhb.GetTargetPath()
+	path, err := nixurl.GetTargetPath()
 	if err != nil {
 		log.Fatalf("Failed to get target files: %s", err.Error())
 	}
@@ -78,14 +78,14 @@ $ nix-headbump -version`
 			return
 		}
 		if *currentFlag {
-			current, err := nhb.GetCurrentVersion(path)
+			current, err := nixurl.GetCurrentVersion(path)
 			if err != nil {
 				log.Fatalf("Getting the current version has been failed: %s", err.Error())
 			}
 			fmt.Println(current)
 			return
 		}
-		last, err := nhb.GetLastVersion()
+		last, err := nixurl.GetLastVersion()
 		if err != nil {
 			log.Fatalf("Getting the last version has been failed: %s", err.Error())
 		}
@@ -100,11 +100,11 @@ $ nix-headbump -version`
 		if err != nil {
 			flag.Usage()
 		}
-		last, err := nhb.GetLastVersion()
+		last, err := nixurl.GetLastVersion()
 		if err != nil {
 			log.Fatalf("Getting the last version has been failed: %s", err.Error())
 		}
-		if err = nhb.Bump(path, last); err != nil {
+		if err = nixurl.Bump(path, last); err != nil {
 			log.Fatalf("Bumping the version has been failed: %s", err.Error())
 		}
 
