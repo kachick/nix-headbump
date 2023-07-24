@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	nhb "nix-headbump"
+	nhb "github.com/kachick/nix-headbump"
 )
 
 var (
