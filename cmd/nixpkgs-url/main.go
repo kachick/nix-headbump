@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	nhb "github.com/kachick/nixpkgs-url"
+	nixurl "github.com/kachick/nixpkgs-url"
 )
 
 var (
@@ -59,7 +59,7 @@ $ nixpkgs-url -version`
 		os.Exit(1)
 	}
 
-	path, err := nhb.GetTargetPath()
+	path, err := nixurl.GetTargetPath()
 	if err != nil {
 		log.Fatalf("Failed to get target files: %s", err.Error())
 	}
@@ -78,14 +78,14 @@ $ nixpkgs-url -version`
 			return
 		}
 		if *currentFlag {
-			current, err := nhb.GetCurrentVersion(path)
+			current, err := nixurl.GetCurrentVersion(path)
 			if err != nil {
 				log.Fatalf("Getting the current version has been failed: %s", err.Error())
 			}
 			fmt.Println(current)
 			return
 		}
-		last, err := nhb.GetLastVersion()
+		last, err := nixurl.GetLastVersion()
 		if err != nil {
 			log.Fatalf("Getting the last version has been failed: %s", err.Error())
 		}
@@ -100,11 +100,11 @@ $ nixpkgs-url -version`
 		if err != nil {
 			flag.Usage()
 		}
-		last, err := nhb.GetLastVersion()
+		last, err := nixurl.GetLastVersion()
 		if err != nil {
 			log.Fatalf("Getting the last version has been failed: %s", err.Error())
 		}
-		if err = nhb.Bump(path, last); err != nil {
+		if err = nixurl.Bump(path, last); err != nil {
 			log.Fatalf("Bumping the version has been failed: %s", err.Error())
 		}
 
