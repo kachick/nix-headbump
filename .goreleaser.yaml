@@ -9,7 +9,7 @@ before:
 builds:
   - env:
       - CGO_ENABLED=0
-    main: ./cmd/nixpkgs-path
+    main: ./cmd/nixpkgs-url
     goos:
       - linux
       # - windows

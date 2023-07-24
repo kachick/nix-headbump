@@ -20,8 +20,8 @@ task: [test] go test
 task: [lint] dprint check
 task: [lint] go vet
 PASS
-ok      nixpkgs-path    0.313s
+ok      nixpkgs-url    0.313s
 
-> ./dist/nixpkgs-path --version
-nixpkgs-path dev (rev) # unknown
+> ./dist/nixpkgs-url --version
+nixpkgs-url dev (rev) # unknown
 ```

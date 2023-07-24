@@ -21,7 +21,7 @@
 go.work
 
 # Binary when not used goreleaser
-/nixpkgs-path
+/nixpkgs-url
 
 # goreleaser generates to
 dist/

@@ -25,9 +25,9 @@
             ];
           };
 
-        packages.nixpkgs-path = pkgs.stdenv.mkDerivation
+        packages.nixpkgs-url = pkgs.stdenv.mkDerivation
           {
-            name = "nixpkgs-path";
+            name = "nixpkgs-url";
             src = self;
             buildInputs = with pkgs; [
               go_1_20
@@ -40,16 +40,16 @@
             '';
             installPhase = ''
               mkdir -p $out/bin
-              install -t $out/bin dist/nixpkgs-path
+              install -t $out/bin dist/nixpkgs-url
             '';
           };
 
-        packages.default = packages.nixpkgs-path;
+        packages.default = packages.nixpkgs-url;
 
         # `nix run`
         apps.default = {
           type = "app";
-          program = "${packages.nixpkgs-path}/bin/nixpkgs-path";
+          program = "${packages.nixpkgs-url}/bin/nixpkgs-url";
         };
       }
     );

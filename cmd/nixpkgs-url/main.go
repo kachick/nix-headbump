@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	nhb "github.com/kachick/nixpkgs-path"
+	nhb "github.com/kachick/nixpkgs-url"
 )
 
 var (
@@ -19,11 +19,11 @@ var (
 )
 
 func main() {
-	const usage = `Usage: nixpkgs-path <subcommand> <flags>
+	const usage = `Usage: nixpkgs-url <subcommand> <flags>
 
-$ nixpkgs-path detect -current
-$ nixpkgs-path bump
-$ nixpkgs-path -version`
+$ nixpkgs-url detect -current
+$ nixpkgs-url bump
+$ nixpkgs-url -version`
 
 	detectCmd := flag.NewFlagSet("detect", flag.ExitOnError)
 	bumpCmd := flag.NewFlagSet("bump", flag.ExitOnError)
@@ -46,7 +46,7 @@ $ nixpkgs-path -version`
 	if len(commit) >= 7 {
 		revision = commit[:7]
 	}
-	version := fmt.Sprintf("%s\n", "nixpkgs-path"+" "+version+" "+"("+revision+") # "+date)
+	version := fmt.Sprintf("%s\n", "nixpkgs-url"+" "+version+" "+"("+revision+") # "+date)
 
 	flag.Parse()
 	if *versionFlag {

@@ -1,3 +1,3 @@
-module github.com/kachick/nixpkgs-path
+module github.com/kachick/nixpkgs-url
 
 go 1.20
