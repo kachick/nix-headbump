@@ -17,7 +17,7 @@ When I want to bump it, I always visit the nixpkgs repository and copy and paste
 ```console
 > curl -L https://github.com/kachick/nixpkgs-url/releases/latest/download/nixpkgs-url_Linux_x86_64.tar.gz | tar xvz -C ./ nixpkgs-url
 > ./nixpkgs-url --version
-nixpkgs-url 0.2.0 (70f68fa) # 2023-06-22T09:58:05Z
+...
 ```
 
 In [Nix](https://nixos.org/), you can skip installation steps
@@ -25,8 +25,8 @@ In [Nix](https://nixos.org/), you can skip installation steps
 ```console
 > nix run github:kachick/nixpkgs-url -- --version
 nixpkgs-url dev (rev) # unknown
-> nix run github:kachick/nixpkgs-url/v0.2.3 -- detect --current
-(Will work with specific versions since v0.2.3)
+> nix run github:kachick/nixpkgs-url/v0.2.4 -- detect --current
+...(With specific version)
 ```
 
 `go install`
