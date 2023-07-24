@@ -10,9 +10,12 @@ import (
 )
 
 var (
+	// Used in goreleaser
 	version = "dev"
 	commit  = "none"
 	date    = "unknown"
+
+	revision = "rev"
 )
 
 func main() {
@@ -40,10 +43,14 @@ $ nix-headbump -version`
 		bumpCmd.Usage()
 	}
 
+	if len(commit) >= 7 {
+		revision = commit[:7]
+	}
+	version := fmt.Sprintf("%s\n", "nix-headbump"+" "+version+" "+"("+revision+") # "+date)
+
 	flag.Parse()
 	if *versionFlag {
-		revision := commit[:7]
-		fmt.Printf("%s\n", "nix-headbump"+" "+version+" "+"("+revision+") # "+date)
+		fmt.Println(version)
 		return
 	}
 

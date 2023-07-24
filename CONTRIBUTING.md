@@ -22,14 +22,6 @@ task: [lint] go vet
 PASS
 ok      nix-headbump    0.313s
 
-> find dist
-dist
-dist/metadata.json
-dist/config.yaml
-dist/nix-headbump_linux_amd64_v1
-dist/nix-headbump_linux_amd64_v1/nix-headbump
-dist/artifacts.json
-
-> ./dist/nix-headbump_linux_amd64_v1/nix-headbump --version
-nix-headbump 0.1.1-next (906924b) # 2023-06-19T09:33:14Z
+> ./dist/nix-headbump --version
+nix-headbump dev (rev) # unknown
 ```

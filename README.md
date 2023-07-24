@@ -11,12 +11,21 @@ When I want to bump it, I always visit the nixpkgs repository and copy and paste
 
 ## Installation
 
-`go install` is also okay, or use [prebuilt binaries](https://github.com/kachick/nix-headbump/releases)
+[Prebuilt binaries](https://github.com/kachick/nix-headbump/releases)
 
 ```console
 > curl -L https://github.com/kachick/nix-headbump/releases/latest/download/nix-headbump_Linux_x86_64.tar.gz | tar xvz -C ./ nix-headbump
 > ./nix-headbump --version
 nix-headbump 0.2.0 (70f68fa) # 2023-06-22T09:58:05Z
+```
+
+In [Nix](https://nixos.org/), you can skip installation steps
+
+```console
+> nix run github:kachick/nix-headbump -- --version
+nix-headbump dev (rev) # unknown
+> nix run github:kachick/nix-headbump/v0.2.3 -- detect --current
+(Will work with specific versions since v0.2.3)
 ```
 
 ## Usage
