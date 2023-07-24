@@ -21,7 +21,7 @@
 go.work
 
 # Binary when not used goreleaser
-/nix-headbump
+/nixpkgs-path
 
 # goreleaser generates to
 dist/

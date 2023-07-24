@@ -13,10 +13,10 @@ tasks:
       - go install -ldflags "-X main.commit=$(git rev-parse HEAD) -X main.date=$(date --iso-8601)"
   build:preview:
     cmds:
-      - goreleaser build --snapshot --single-target --clean --output dist/nix-headbump
+      - goreleaser build --snapshot --single-target --clean --output dist/nixpkgs-path
   build:
     cmds:
-      - go build -o ./dist/nix-headbump ./cmd/nix-headbump
+      - go build -o ./dist/nixpkgs-path ./cmd/nixpkgs-path
   test:
     cmds:
       - go test
