@@ -28,6 +28,15 @@ nix-headbump dev (rev) # unknown
 (Will work with specific versions since v0.2.3)
 ```
 
+`go install`
+
+```console
+> go install github.com/kachick/nix-headbump/cmd/nix-headbump@latest
+go: downloading...
+> ${GOPATH:-"$HOME/go"}/bin/nix-headbump --version
+never18 dev (rev)
+```
+
 ## Usage
 
 Providing two subcommands. I'm using `detect` in CI and `bump` in local.
