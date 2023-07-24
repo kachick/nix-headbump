@@ -34,7 +34,7 @@ nix-headbump dev (rev) # unknown
 > go install github.com/kachick/nix-headbump/cmd/nix-headbump@latest
 go: downloading...
 > ${GOPATH:-"$HOME/go"}/bin/nix-headbump --version
-never18 dev (rev)
+nix-headbump dev (rev) # unknown
 ```
 
 ## Usage
