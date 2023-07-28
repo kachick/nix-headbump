@@ -30,7 +30,7 @@ $ nixpkgs-url -version`
 	versionFlag := flag.Bool("version", false, "print the version of this program")
 	currentFlag := detectCmd.Bool("current", false, "print current nixpath without bumping")
 	lastFlag := detectCmd.Bool("last", false, "print git head ref without bumping")
-	target := detectCmd.Bool("target", false, "print which file will be bumped")
+	targetFlag := detectCmd.Bool("target", false, "print which file will be bumped")
 
 	flag.Usage = func() {
 		// https://github.com/golang/go/issues/57059#issuecomment-1336036866
@@ -73,7 +73,7 @@ $ nixpkgs-url -version`
 		if err != nil {
 			flag.Usage()
 		}
-		if *target {
+		if *targetFlag {
 			fmt.Println(path)
 			return
 		}
