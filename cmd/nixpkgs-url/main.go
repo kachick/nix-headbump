@@ -102,13 +102,13 @@ $ nixpkgs-url -version`
 		}
 		last, err := nixurl.GetLastVersion()
 		if err != nil {
+			bumpCmd.Usage()
 			log.Fatalf("Getting the last version has been failed: %s", err.Error())
 		}
 		if err = nixurl.Bump(path, last); err != nil {
+			bumpCmd.Usage()
 			log.Fatalf("Bumping the version has been failed: %s", err.Error())
 		}
-
-		bumpCmd.Usage()
 	default:
 		flag.Usage()
 
