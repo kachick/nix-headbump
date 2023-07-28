@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
-	"runtime"
 
 	nixurl "github.com/kachick/nixpkgs-url"
 )
@@ -19,25 +17,6 @@ var (
 
 	revision = "rev"
 )
-
-// https://stackoverflow.com/posts/39324149/revisions
-// open opens the specified URL in the default browser of the user.
-func open(url string) error {
-	var cmd string
-	var args []string
-
-	switch runtime.GOOS {
-	case "windows":
-		cmd = "cmd"
-		args = []string{"/c", "start"}
-	case "darwin":
-		cmd = "open"
-	default: // "linux", "freebsd", "openbsd", "netbsd"
-		cmd = "xdg-open"
-	}
-	args = append(args, url)
-	return exec.Command(cmd, args...).Start()
-}
 
 func main() {
 	const usage = `Usage: nixpkgs-url <subcommand> <flags>
@@ -52,7 +31,7 @@ $ nixpkgs-url -version`
 	currentFlag := detectCmd.Bool("current", false, "print current nixpath without bumping")
 	lastFlag := detectCmd.Bool("last", false, "print git head ref without bumping")
 	targetFlag := detectCmd.Bool("target", false, "print which file will be bumped")
-	jumpFlag := detectCmd.Bool("jump", false, "open github URL with current ref")
+	jumpFlag := detectCmd.Bool("jump", false, "print reasonable URL for the ref")
 
 	flag.Usage = func() {
 		// https://github.com/golang/go/issues/57059#issuecomment-1336036866
@@ -104,13 +83,13 @@ $ nixpkgs-url -version`
 			if err != nil {
 				log.Fatalf("Getting the current version has been failed: %s", err.Error())
 			}
-			fmt.Println(current)
 
 			if *jumpFlag {
-				err = open("https://github.com/NixOS/nixpkgs/commit/" + current)
-				if err != nil {
-					log.Fatalf(err.Error())
-				}
+				// Do not call as xdg-open for WSL2, URL will be displayed as a clickable in newer terminals, it is enought
+				// https://github.com/microsoft/WSL/issues/8892
+				fmt.Println("https://github.com/NixOS/nixpkgs/commit/" + current)
+			} else {
+				fmt.Println(current)
 			}
 
 			return
