@@ -31,6 +31,9 @@ $ nixpkgs-url -version`
 	currentFlag := detectCmd.Bool("current", false, "print current nixpath without bumping")
 	lastFlag := detectCmd.Bool("last", false, "print git head ref without bumping")
 	targetFlag := detectCmd.Bool("target", false, "print which file will be bumped")
+
+	// Do not call as xdg-open for WSL2, URL will be displayed as a clickable in newer terminals, it is enough
+	// https://github.com/microsoft/WSL/issues/8892
 	jumpFlag := detectCmd.Bool("jump", false, "print reasonable URL for the ref")
 
 	flag.Usage = func() {
@@ -85,8 +88,6 @@ $ nixpkgs-url -version`
 			}
 
 			if *jumpFlag {
-				// Do not call as xdg-open for WSL2, URL will be displayed as a clickable in newer terminals, it is enough
-				// https://github.com/microsoft/WSL/issues/8892
 				fmt.Println("https://github.com/NixOS/nixpkgs/commit/" + current)
 			} else {
 				fmt.Println(current)
@@ -100,8 +101,6 @@ $ nixpkgs-url -version`
 		}
 		if *lastFlag {
 			if *jumpFlag {
-				// Do not call as xdg-open for WSL2, URL will be displayed as a clickable in newer terminals, it is enough
-				// https://github.com/microsoft/WSL/issues/8892
 				fmt.Println("https://github.com/NixOS/nixpkgs/commit/" + last)
 			} else {
 				fmt.Println(last)
