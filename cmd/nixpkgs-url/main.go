@@ -82,6 +82,18 @@ $ nixpkgs-url -version`
 			flag.Usage()
 		}
 
+		detectFlags := []bool{*lastFlag, *targetFlag, *currentFlag}
+		givenFlagsCount := 0
+		for _, fg := range detectFlags {
+			if fg {
+				givenFlagsCount += 1
+			}
+		}
+
+		if givenFlagsCount != 1 {
+			log.Fatalf("`detect` subcommand called with %d flags, but it accepts just one flag", givenFlagsCount)
+		}
+
 		if *lastFlag {
 			last, err := nixurl.GetLastVersion()
 			if err != nil {
