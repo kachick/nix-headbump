@@ -91,7 +91,7 @@ $ nixpkgs-url -version`
 		}
 
 		if givenFlagsCount != 1 {
-			log.Fatalf("`detect` subcommand called with %d flags, but it accepts just one flag", givenFlagsCount)
+			log.Fatalf("`detect` subcommand called with %d flags of `--last`, `--target`, `--current`, but it accepts just one flag except `--jump`", givenFlagsCount)
 		}
 
 		if *lastFlag {
