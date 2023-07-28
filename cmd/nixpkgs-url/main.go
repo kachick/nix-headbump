@@ -99,7 +99,13 @@ $ nixpkgs-url -version`
 			log.Fatalf("Getting the last version has been failed: %s", err.Error())
 		}
 		if *lastFlag {
-			fmt.Println(last)
+			if *jumpFlag {
+				// Do not call as xdg-open for WSL2, URL will be displayed as a clickable in newer terminals, it is enought
+				// https://github.com/microsoft/WSL/issues/8892
+				fmt.Println("https://github.com/NixOS/nixpkgs/commit/" + last)
+			} else {
+				fmt.Println(last)
+			}
 			return
 		}
 
