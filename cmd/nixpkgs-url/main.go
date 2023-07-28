@@ -18,6 +18,18 @@ var (
 	revision = "rev"
 )
 
+func mustGetTargetPath() string {
+	path, err := nixurl.GetTargetPath()
+	if err != nil {
+		log.Fatalf("Failed to get target files: %s", err.Error())
+	}
+	if path == "" {
+		log.Fatalln("Any *.nix files are not found")
+	}
+
+	return path
+}
+
 func main() {
 	const usage = `Usage: nixpkgs-url <subcommand> <flags>
 
@@ -63,24 +75,32 @@ $ nixpkgs-url -version`
 		os.Exit(1)
 	}
 
-	path, err := nixurl.GetTargetPath()
-	if err != nil {
-		log.Fatalf("Failed to get target files: %s", err.Error())
-	}
-	if path == "" {
-		log.Fatalln("Any *.nix files are not found")
-	}
-
 	switch os.Args[1] {
 	case "detect":
 		err := detectCmd.Parse(os.Args[2:])
 		if err != nil {
 			flag.Usage()
 		}
+
+		if *lastFlag {
+			last, err := nixurl.GetLastVersion()
+			if err != nil {
+				log.Fatalf("Getting the last version has been failed: %s", err.Error())
+			}
+			if *jumpFlag {
+				fmt.Println("https://github.com/NixOS/nixpkgs/commit/" + last)
+			} else {
+				fmt.Println(last)
+			}
+			return
+		}
+
+		path := mustGetTargetPath()
 		if *targetFlag {
 			fmt.Println(path)
 			return
 		}
+
 		if *currentFlag {
 			current, err := nixurl.GetCurrentVersion(path)
 			if err != nil {
@@ -95,18 +115,6 @@ $ nixpkgs-url -version`
 
 			return
 		}
-		last, err := nixurl.GetLastVersion()
-		if err != nil {
-			log.Fatalf("Getting the last version has been failed: %s", err.Error())
-		}
-		if *lastFlag {
-			if *jumpFlag {
-				fmt.Println("https://github.com/NixOS/nixpkgs/commit/" + last)
-			} else {
-				fmt.Println(last)
-			}
-			return
-		}
 
 		detectCmd.Usage()
 	case "bump":
@@ -119,7 +127,7 @@ $ nixpkgs-url -version`
 			bumpCmd.Usage()
 			log.Fatalf("Getting the last version has been failed: %s", err.Error())
 		}
-		if err = nixurl.Bump(path, last); err != nil {
+		if err = nixurl.Bump(mustGetTargetPath(), last); err != nil {
 			bumpCmd.Usage()
 			log.Fatalf("Bumping the version has been failed: %s", err.Error())
 		}
