@@ -1,5 +1,8 @@
 # nixpkgs-url
 
+[![CI - Go Status](https://github.com/kachick/nixpkgs-url/actions/workflows/ci-go.yml/badge.svg?branch=main)](https://github.com/kachick/nixpkgs-url/actions/workflows/ci-go.yml?query=branch%3Amain+)
+[![CI - Nix Status](https://github.com/kachick/nixpkgs-url/actions/workflows/ci-nix.yml/badge.svg?branch=main)](https://github.com/kachick/nixpkgs-url/actions/workflows/ci-nix.yml?query=branch%3Amain+)
+
 For my personal use.
 
 I'm a new to the Nix ecosystem.\
