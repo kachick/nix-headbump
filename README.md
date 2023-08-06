@@ -1,5 +1,9 @@
 # nixpkgs-url
 
+- _**This repository is archived**_, the reason is described in [#24](https://github.com/kachick/nixpkgs-url/issues/24)
+- This tool is unnecessary, at least in `Nix Flakes`
+- For an example on 2023-08-06, I use `github:NixOS/nixpkgs/nixpkgs-unstable` or `github:NixOS/nixpkgs/nixos-unstable` and `nix flake update --commit-lock-file`
+
 [![CI - Go Status](https://github.com/kachick/nixpkgs-url/actions/workflows/ci-go.yml/badge.svg?branch=main)](https://github.com/kachick/nixpkgs-url/actions/workflows/ci-go.yml?query=branch%3Amain+)
 [![CI - Nix Status](https://github.com/kachick/nixpkgs-url/actions/workflows/ci-nix.yml/badge.svg?branch=main)](https://github.com/kachick/nixpkgs-url/actions/workflows/ci-nix.yml?query=branch%3Amain+)
 
