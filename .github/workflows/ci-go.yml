@@ -48,5 +48,5 @@ jobs:
           fetch-depth: 1
       - uses: dominikh/staticcheck-action@v1.3.0
         with:
-          # Keep same version as *.nix
+          # Keep same version as used in *.nix
           version: '2023.1.3'
